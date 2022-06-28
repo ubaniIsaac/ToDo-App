@@ -1,0 +1,73 @@
+.todo-form {
+    display: inline-block;
+    /* position: absolute; */
+    border: 3px solid lightgrey;
+    border-radius: 30px;
+    /* left: 50%;
+    top: 20%; */
+    /* transform: translate(-50%, -50%); */
+    width: max-content;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.invalid {
+    display: flex;
+    /* position: absolute; */
+    border: 1px solid red;
+    border-radius: 30px;
+    /* left: 50%;
+    top: 20%; */
+    /* transform: translate(-50%, -50%); */
+    width: max-content;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.todo-input {
+    display: inline-flex;
+    margin: 3vmin;
+    padding-top: 12px;
+    min-height: 40px;
+    font-size: x-large;
+    font-weight: 600;
+    border: transparent;
+    outline-width: 0;
+    background: none
+}
+
+.date {
+    background: none;
+    border: none;
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.react-datepicker_wrapper {
+    border: none;
+}
+
+.add-btn {
+    margin-left: 10px;
+    margin-right: 0px;
+    margin-top: 10px;
+    /* padding-bottom: -10px; */
+    display: inline-flex;
+    margin-left: 10px;
+    height: max-content;
+    border: none;
+    background: transparent;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+/* .add-outline {
+    mar
+} */
