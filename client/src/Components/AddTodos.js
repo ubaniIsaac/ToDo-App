@@ -7,8 +7,6 @@ import '../Styles/AddTodos.css'
 const AddTodos = ({ onAdd }) => {
 
     const [text, setText] = useState('')
-    // const [day, setDay] = useState()
-
 
     let invalid = false
     const handleSubmit = (e) => {
