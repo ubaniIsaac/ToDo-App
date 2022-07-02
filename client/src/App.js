@@ -22,6 +22,8 @@ function App() {
 
   useEffect(() => {
     fetchTodos()
+    fetchCompleted()
+
   }, [])
 
   const fetchTodos = async () => {
@@ -69,9 +71,7 @@ function App() {
 
     setTodos(todos.filter((todo) => todo.id !== id))
 
-    // setTodos([...todos])
 
-    // fetchTodos()
   }
 
   const fetchCompleted = async () => {
@@ -81,19 +81,30 @@ function App() {
     setComplete(data)
   }
 
-  const completeTodo = async (complete, id) => {
-    console.log(complete);
+
+  const completeTodo = async (completes, id) => {
+
+    console.log(completes);
     const res = await fetch(`${API_URL}/completed`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
-        complete
+        "text": completes
 
       })
     })
-    // complete.push(todos.filter((todo) => todo.id === id))
+
+    const text = await res.json()
+
+    const newComplete = { id, ...text }
+
+    console.log(newComplete)
+
+    setComplete([newComplete, ...complete])
+
+    fetchCompleted()
     console.log(complete)
     setTodos(todos.filter((todo) => todo.id !== id))
   }
@@ -115,7 +126,10 @@ function App() {
             <Footer />
 
           </>} />
-        <Route path='/completed' element={<Completed />} />
+        <Route path='/completed' element={<Completed
+          todos={todos}
+
+        />} />
 
       </Routes>
     </Router>

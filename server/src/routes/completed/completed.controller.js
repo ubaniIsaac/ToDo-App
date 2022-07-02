@@ -1,18 +1,70 @@
-const { getAllComplete, addNewComplete } = require('../../models/completed.model');
+const Completed = require("../../models/completed.model")
 
-function httpGetAllComplete(req, res) {
-    return res.status(200).json(getAllComplete());
+
+exports.getAll = (req, res) => {
+
+    Completed.getAllComplete((err, data) => {
+        if (err) {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occured"
+            });
+        } else res.send(data);
+    })
 }
 
-function httpAddNewComplete(req, res) {
-    const complete = req.body
-    addNewComplete(complete)
-    return res.status(200).json(complete);
+exports.getOneComplete = (req, res) => {
 
+    Completed.getCompleteById(Number(req.params.id), (err, data) => {
+        if (err) {
+            if (err.kind === "not found") {
+                res.status(404).send({
+                    message: `No todo with id ${req.params.id}`
+                })
+            } else res.status(500).send({
+                message:
+                    err.message || "Some error occured"
+            })
+        } else res.send(data)
+    })
 }
 
-module.exports = {
-    httpGetAllComplete,
-    httpAddNewComplete,
-
+exports.addCompleted = (req, res) => {
+    Completed.addCompleted(req.body, (err, data) => {
+        if (err) {
+            res.status(400).json({
+                "status": "failed"
+            })
+        } else {
+            res.json({
+                "status": "success",
+                "data": { ...req.body }
+            })
+        }
+    })
 }
+
+exports.deleteComplete = (req, res) => {
+    Completed.deleteCompleteById(Number(req.params.id), (err, data) => {
+        if (err) {
+            if (err.kind === 'not found') {
+                res.status(404).json({
+                    error: 'not found'
+                })
+            } else
+                res.status(500).json({
+                    error: "internal error"
+                })
+        }
+        else
+            res.status(200).json({
+                status: 'success',
+                data: null
+
+            })
+
+
+
+    })
+}
+

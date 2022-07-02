@@ -2,8 +2,8 @@ const express = require('express')
 const cors = require('cors')
 
 
-// const { todosRouter } = require('./routes/todos/todos.router')
-// const { completedRouter } = require('./routes/completed/completed.router')
+const { todosRouter } = require('./routes/todos/todos.router')
+const { completedRouter } = require('./routes/completed/completed.router')
 const app = express()
 
 
@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 require('./routes/todos/todos.router')(app);
+require('./routes/completed/completed.router')(app);
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

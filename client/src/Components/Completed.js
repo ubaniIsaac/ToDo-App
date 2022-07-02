@@ -2,22 +2,23 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"
 import Todo from "./Todo";
 
+
 const Completed = () => {
     const [complete, setComplete] = useState([])
 
-    const API_URL = 'http://localhost:5000';
+    // const API_URL = 'http://localhost:5000';
 
 
-    useEffect(() => {
-        fetchCompleted()
-    }, [])
+    // useEffect(() => {
+    //     fetchCompleted()
+    // }, [])
 
-    const fetchCompleted = async () => {
-        const res = await fetch(`${API_URL}/completed`)
-        const data = await res.json()
+    // const fetchCompleted = async () => {
+    //     const res = await fetch(`${API_URL}/completed`)
+    //     const data = await res.json()
 
-        setComplete(data)
-    }
+    //     setComplete(data)
+    // }
 
     const navigate = useNavigate()
 
@@ -29,7 +30,12 @@ const Completed = () => {
         <div>
             <div>Completed</div>
             <div className='todolist'>
-
+                {todos.map((todo) =>
+                (<Todo
+                    key={todo.id}
+                    todo={todo}
+                />
+                ))}
 
             </div>
             <button onClick={nav}>To-Dos</button>

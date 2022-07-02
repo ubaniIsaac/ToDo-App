@@ -1,10 +1,23 @@
-const express = require('express')
+const completedRouter = require('express').Router();
 
-const { httpGetAllComplete, httpAddNewComplete } = require('./completed.controller');
+const completedController = require('../completed/completed.controller');
 
-const completedRouter = express.Router();
+module.exports = app => {
 
-completedRouter.get('/', httpGetAllComplete)
-completedRouter.post('/', httpAddNewComplete)
+    completedRouter.get('/', completedController.getAll);
 
-module.exports = { completedRouter }
+    completedRouter.get('/:id', completedController.getOneComplete);
+
+    completedRouter.post('/', completedController.addCompleted);
+
+    completedRouter.delete('/:id', completedController.deleteComplete);
+
+    app.use('/completed', completedRouter)
+
+    app.use((err, req, res, next) => {
+        res.status(err.statusCode || 500).send({
+            message: err.message
+        });
+        next();
+    })
+}
