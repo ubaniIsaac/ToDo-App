@@ -1,4 +1,3 @@
-const { text } = require("express");
 const db = require("../config/db.config")
 
 class Todos {

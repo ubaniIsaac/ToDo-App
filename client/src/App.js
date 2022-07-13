@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './Styles/App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import SignIn from './Components/SignIn';
+import SignUp from './Components/SignUp';
 import AddTodos from './Components/AddTodos';
 import Todo from './Components/Todo';
 import TodoList from './Components/TodoList';
@@ -25,6 +26,34 @@ function App() {
     fetchCompleted()
 
   }, [])
+
+  const login = async (email, password) => {
+    const res = await fetch(`${API_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+
+        "email": email,
+        "password": password
+      })
+    })
+  }
+
+  const signup = async (username, email, password) => {
+    const res = await fetch(`${API_URL}/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        "username": username,
+        "email": email,
+        "password": password
+      })
+    })
+  }
 
   const fetchTodos = async () => {
     const res = await fetch(`${API_URL}/todo`)
@@ -112,7 +141,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<SignIn />} />
+        <Route path='/' element={<SignIn login={login} />} />
+        <Route path='/signup' element={<SignUp signup={signup} />} />
         <Route path='/todo' element={
           <>
             <AddTodos onAdd={addTodo} />

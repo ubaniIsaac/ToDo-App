@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const auth = require("./middlewares/auth")
 
 
 const { todosRouter } = require('./routes/todos/todos.router')
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 });
 
 require('./routes/todos/todos.router')(app);
+require('./routes/users/user.router')(app);
 require('./routes/completed/completed.router')(app);
 
 app.listen(PORT, () => {

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../Styles/SignIn.css'
 
-const SignIn = () => {
+const SignIn = ({ login }) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -22,13 +22,16 @@ const SignIn = () => {
         } else {
             alert('Insert Email & Password')
         }
+
+        login(email, password)
+
     }
 
     return (
         <div>
             <header className="form-header">
                 <h1>Sign in with your Email.</h1>
-                <h6>Don't have an account? <span>Sign Up.</span></h6>
+                <h6>Don't have an account? <span><a href='/signup'>SignUp</a></span></h6>
             </header>
             <form onSubmit={onSubmit}>
                 {/* <label className="label">Name</label>
@@ -36,6 +39,7 @@ const SignIn = () => {
                 <label className="label">Email </label>
 
                 <input className="email signin"
+                    name='email'
                     type="email"
                     placeholder='Email'
                     value={email}
@@ -45,6 +49,7 @@ const SignIn = () => {
                 />
                 <label className="label">Password </label>
                 <input className="password signin"
+                    name='password'
                     type="password"
                     placeholder='Password'
                     value={password}

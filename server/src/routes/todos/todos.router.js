@@ -1,10 +1,11 @@
 const todosRouter = require('express').Router();
 
-const todosController = require('../todos/todos.controller');
+const auth = require('../../middlewares/auth');
+const todosController = require('./todos.controller');
 
 module.exports = app => {
 
-    todosRouter.get('/', todosController.getAll);
+    todosRouter.get('/', auth, todosController.getAll);
 
     todosRouter.get('/:id', todosController.getOneTodo);
 

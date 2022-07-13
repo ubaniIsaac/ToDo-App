@@ -9,6 +9,7 @@ const Todo = ({ todo, onDelete, onComplete }) => {
                 onClick={() => onDelete(todo.id)} />
             <input type='checkbox'
                 onClick={() => onComplete(todo, todo.id)}></input>
+
             <h3>{todo.text}</h3>
             {/* <p>{todo.day}</p> */}
 
