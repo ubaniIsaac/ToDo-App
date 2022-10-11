@@ -1,24 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"
-import Todo from "./Todo";
+import { FaTimes } from 'react-icons/fa'
+
+// import Todo from "./Todo";
 
 
-const Completed = () => {
+const Completed = ({ completeTodo, onDelete }) => {
     const [complete, setComplete] = useState([])
-
-    // const API_URL = 'http://localhost:5000';
-
-
-    // useEffect(() => {
-    //     fetchCompleted()
-    // }, [])
-
-    // const fetchCompleted = async () => {
-    //     const res = await fetch(`${API_URL}/completed`)
-    //     const data = await res.json()
-
-    //     setComplete(data)
-    // }
 
     const navigate = useNavigate()
 
@@ -28,18 +16,12 @@ const Completed = () => {
 
     return (
         <div>
-            <div>Completed</div>
-            <div className='todolist'>
-                {todos.map((todo) =>
-                (<Todo
-                    key={todo.id}
-                    todo={todo}
-                />
-                ))}
+            <div className='todo'>
+                <FaTimes className='delete-btn'
+                    onClick={() => onDelete(completeTodo.id)} />
 
+                <h3>{completeTodo.text}</h3>
             </div>
-            <button onClick={nav}>To-Dos</button>
-            <div></div>
         </div>
     )
 }

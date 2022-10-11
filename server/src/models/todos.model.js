@@ -7,7 +7,18 @@ class Todos {
     }
 
     static getAllTodos(result) {
-        db.query('SELECT * FROM todos ORDER BY id DESC', (err, res) => {
+        db.query('SELECT * FROM todos WHERE completed = 0 ORDER BY id DESC', (err, res) => {
+            if (err) {
+                console.log(`error: ${err}`);
+                result(null, err);
+                return;
+            }
+            result(null, res)
+        })
+    }
+
+    static getCompletedTodos(result) {
+        db.query(`SELECT * FROM todos WHERE completed = 1 ORDER BY id DESC`, (err, res) => {
             if (err) {
                 console.log(`error: ${err}`);
                 result(null, err);
@@ -51,18 +62,41 @@ class Todos {
 
     }
 
-    static deleteTodoById(id, result) {
-
-        db.query('DELETE FROM todos WHERE EXISTS(SELECT id = ? );', [id], (err, res) => {
+    static completeTodoById(id, result) {
+        db.query('SELECT * FROM todos WHERE id = ?', [id], (err, res) => {
             if (err) {
-
-                // console.log(`error: ${err}`);
-                result(err, null);
+                result({ kind: err }, null)
                 return
             }
-            else result(null, { kind: 'deleted' });;
-            // console.log()
+            db.query('UPDATE todos SET completed = 1 WHERE id = ?', [id], (err, res) => {
+                if (err) {
+                    throw err
+                }
+                result(null, { Todos })
+            })
         })
+    }
+
+    static deleteTodoById(id, result) {
+        db.query('SELECT * FROM todos WHERE id = ?', [id], (err, res) => {
+            if (!res[0]) {
+                result({ kind: 'not found' }, null)
+                return
+            }
+            db.query('DELETE FROM todos WHERE id = ?', [id], (err, res) => {
+                if (err) {
+
+                    // console.log(`error: ${err}`);
+                    result(err, null);
+                    return
+                }
+                else result(null, { kind: 'deleted' });;
+                // console.log()
+            })
+
+
+        })
+
     }
 }
 

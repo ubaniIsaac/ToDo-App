@@ -46,7 +46,7 @@ exports.login = (req, res) => {
             res.status(400).send("All inputs required");
         }
         db.query(`SELECT * FROM users WHERE email = ?`, [email], async (err, result) => {
-            // console.log(result[0].password, result[0].id)
+            // console.log(result[0].password)
             if (result && (await bcrypt.compare(password, result[0].password))) {
                 const token = jwt.sign({ id: result[0].id, email }, SECRET_KEY, { expiresIn: "24h" })
                 return res.status(200).json({ data: result, token })

@@ -2,32 +2,65 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../Styles/SignIn.css'
 
-const SignUp = ({ signup }) => {
+const API_URL = 'http://localhost:5000'
+const SignUp = () => {
+
 
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const navigate = useNavigate()
+    const [success, setSuccess] = useState()
+    const [signupResponse, setSignupResponse] = useState('')
 
 
-    // const
+    const signup = async (userName, email, password) => {
+        try {
+            const res = await fetch(`${API_URL}/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "userName": userName,
+                    "email": email,
+                    "password": password
+                })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+
+                    if (data.status === 'success') {
+                        window.location.href = "/signin"
+                    }
+                    else {
+                        setSuccess(false)
+                        setSignupResponse(data.error)
+                    }
+                })
+        } catch (error) {
+            new Error();
+        }
+
+    }
     const onSubmit = (e) => {
         e.preventDefault()
 
         if (email
             && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-            &&
+            && username &&
             password) {
-            navigate('/')
+            signup(username, email, password)
         } else {
-            alert('Insert Email & Password')
+            alert('Complete all fields')
         }
 
-        signup(username, email, password)
     }
 
     return (
-        <div>
+        <div className='container'>
+
+            <h4>Already Have an account?</h4><span><a href='/signin'>Signin</a></span>
+
             <form onSubmit={onSubmit}>
                 {/* <label className="label">Name</label>
                 <input className="name" type="text" /> */}
@@ -69,6 +102,7 @@ const SignUp = ({ signup }) => {
                 <button className='btn' type='submit'>SIGN UP</button>
 
             </form>
+            {success === false ? <p>{signupResponse}</p> : <></>}
         </div>
     )
 }

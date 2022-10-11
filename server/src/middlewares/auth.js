@@ -7,10 +7,11 @@ module.exports = async (req, res, next) => {
         const token = await req.body.token || req.query.token || req.headers["x-access-token"];
 
         if (!token) {
-            return res.status(403).send("A token is require")
+            return res.status(403).send("A token is required")
         }
-        const decoded = await jwt.verify(token, SECRET_KEY)
+        const decoded = jwt.verify(token, SECRET_KEY)
         req.user = decoded
+
     } catch (err) {
         return res.status(401).send("Invalid token")
     }

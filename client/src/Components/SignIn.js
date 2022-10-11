@@ -1,14 +1,53 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../Styles/SignIn.css'
+import Cookies from "universal-cookie";
+const cookies = new Cookies()
 
-const SignIn = ({ login }) => {
+const API_URL = 'http://localhost:5000/'
+
+const SignIn = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [success, setSuccess] = useState(false)
+    const [loginResponse, setLoginResponse] = useState('')
     const navigate = useNavigate()
 
+    const login = async (email, password) => {
+        try {
+            const res = await fetch(`${API_URL}`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
 
+                    "email": email,
+                    "password": password
+                })
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    cookies.set("TOKEN", data['token'], {
+                        path: "/",
+                    })
+                    if (!data.token) {
+                        setSuccess(false)
+                        setLoginResponse(data.message)
+
+                    }
+                    else {
+                        setSuccess(true)
+                        window.location.href = "/todo"
+                    }
+                })
+        } catch (error) {
+            new Error();
+        }
+
+
+    }
     // const
     const onSubmit = (e) => {
         e.preventDefault()
@@ -17,13 +56,15 @@ const SignIn = ({ login }) => {
             && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
             &&
             password) {
-            navigate('/todo')
+            // navigate('/todo')
             // <Link to='/Todo'></Link>
         } else {
             alert('Insert Email & Password')
         }
 
         login(email, password)
+
+        navigate('/todo')
 
     }
 

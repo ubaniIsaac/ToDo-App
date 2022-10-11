@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Styles/App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
 import AddTodos from './Components/AddTodos';
@@ -9,23 +9,24 @@ import TodoList from './Components/TodoList';
 import { v4 as uuidv4 } from 'uuid';
 import Footer from './Components/Footer';
 import Completed from './Components/Completed';
+import CompleteList from './Components/CompleteList';
 
 
 
 function App() {
   const [todos, setTodos] = useState([])
-  const [complete, setComplete] = useState([])
-
+  const [completed, setCompleted] = useState([])
 
   const API_URL = 'http://localhost:5000';
 
   let id = 100
 
+
   useEffect(() => {
     fetchTodos()
     fetchCompleted()
 
-  }, [])
+  }, [setCompleted])
 
   const login = async (email, password) => {
     const res = await fetch(`${API_URL}`, {
@@ -39,6 +40,7 @@ function App() {
         "password": password
       })
     })
+
   }
 
   const signup = async (username, email, password) => {
@@ -56,7 +58,13 @@ function App() {
   }
 
   const fetchTodos = async () => {
-    const res = await fetch(`${API_URL}/todo`)
+
+    const res = await fetch(`${API_URL}/todo`, {
+      method: 'GET',
+      // headers: {
+      //   Authorization: `Bearer ${token}`
+      // }
+    })
     const data = await res.json()
 
     setTodos(data)
@@ -84,6 +92,22 @@ function App() {
     fetchTodos()
   }
 
+  const completeTodo = async (id) => {
+
+    try {
+      await fetch(`${API_URL}/todo/${id}`, {
+        method: 'PUT'
+      });
+    } catch (err) {
+      console.log(err);
+      return {
+        ok: false
+      }
+    }
+
+    setTodos(todos.filter((todo) => todo.id !== id))
+  }
+
 
   const deleteTodo = async (id) => {
     try {
@@ -97,46 +121,20 @@ function App() {
       }
     }
 
-
     setTodos(todos.filter((todo) => todo.id !== id))
-
-
   }
 
   const fetchCompleted = async () => {
-    const res = await fetch(`${API_URL}/completed`)
+    const res = await fetch(`${API_URL}/completed`, {
+      method: 'GET',
+
+    })
     const data = await res.json()
 
-    setComplete(data)
+    setCompleted(data)
   }
 
 
-  const completeTodo = async (completes, id) => {
-
-    console.log(completes);
-    const res = await fetch(`${API_URL}/completed`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        "text": completes
-
-      })
-    })
-
-    const text = await res.json()
-
-    const newComplete = { id, ...text }
-
-    console.log(newComplete)
-
-    setComplete([newComplete, ...complete])
-
-    fetchCompleted()
-    console.log(complete)
-    setTodos(todos.filter((todo) => todo.id !== id))
-  }
 
   return (
     <Router>
@@ -144,9 +142,10 @@ function App() {
         <Route path='/' element={<SignIn login={login} />} />
         <Route path='/signup' element={<SignUp signup={signup} />} />
         <Route path='/todo' element={
-          <>
-            <AddTodos onAdd={addTodo} />
+          <div className='container'>
+            <header><h1>TO-DO LIST</h1></header>
 
+            <AddTodos onAdd={addTodo} />
             <TodoList
               todos={todos}
               onDelete={deleteTodo}
@@ -155,11 +154,22 @@ function App() {
 
             <Footer />
 
-          </>} />
-        <Route path='/completed' element={<Completed
-          todos={todos}
+          </div>}
+        />
+        <Route path='/completed' element={
+          <div className='container'>
+            <header><h1>Completed</h1></header>
 
-        />} />
+
+            <CompleteList
+              completeTodos={completed}
+              onDelete={deleteTodo}
+            />
+
+
+          </div>
+
+        } />
 
       </Routes>
     </Router>

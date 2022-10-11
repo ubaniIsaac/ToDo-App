@@ -13,6 +13,17 @@ exports.getAll = (req, res) => {
     })
 }
 
+exports.getCompletedTodos = (req, res) => {
+    Todos.getCompletedTodos((err, data) => {
+        if (err) {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occured"
+            });
+        } else res.send(data);
+    })
+}
+
 exports.getOneTodo = (req, res) => {
 
     Todos.getById(Number(req.params.id), (err, data) => {
@@ -39,6 +50,21 @@ exports.addTodo = (req, res) => {
             res.json({
                 "status": "success",
                 "data": { ...req.body }
+            })
+        }
+    })
+}
+
+exports.completeTodo = (req, res) => {
+    Todos.completeTodoById(Number(req.params.id), (err, data) => {
+        if (err) {
+            return res.status(500).json({
+                error: "internal error"
+            })
+        } else {
+            res.status(200).json({
+                status: 'success',
+                data: Todos
             })
         }
     })

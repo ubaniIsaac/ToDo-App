@@ -5,15 +5,19 @@ const todosController = require('./todos.controller');
 
 module.exports = app => {
 
-    todosRouter.get('/', auth, todosController.getAll);
+    todosRouter.get('/todo', todosController.getAll);
 
-    todosRouter.get('/:id', todosController.getOneTodo);
+    todosRouter.get('/todo/:id', todosController.getOneTodo);
 
-    todosRouter.post('/', todosController.addTodo);
+    todosRouter.get('/completed', todosController.getCompletedTodos);
 
-    todosRouter.delete('/:id', todosController.deleteTodo);
+    todosRouter.put('/todo/:id', todosController.completeTodo);
 
-    app.use('/todo', todosRouter)
+    todosRouter.post('/todo', todosController.addTodo);
+
+    todosRouter.delete('/todo/:id', todosController.deleteTodo);
+
+    app.use('/', todosRouter)
 
     app.use((err, req, res, next) => {
         res.status(err.statusCode || 500).send({

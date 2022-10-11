@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import DatePicker from "react-date-picker"
 import { AddOutline } from 'react-ionicons'
-import '../Styles/AddTodos.css'
+// import '../Styles/AddTodos.css'
 
 
 const AddTodos = ({ onAdd }) => {
@@ -27,10 +27,9 @@ const AddTodos = ({ onAdd }) => {
 
     return (
 
-        <div className='container'>
-            <header><h1>TO-DO LIST</h1></header>
+        <div >
             <div className={`${invalid ? 'invalid' : 'todo-form'}`}>
-                <form onSubmit={handleSubmit}>
+                <form className='form' onSubmit={handleSubmit}>
                     <input
                         className='todo-input'
                         type='text'
