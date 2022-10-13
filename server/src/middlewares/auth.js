@@ -1,16 +1,17 @@
 const jwt = require("jsonwebtoken")
+require("dotenv").config()
+const { SECRET_KEY } = process.env
 
-const SECRET_KEY = "mkjkdjjfsijlhjvjflfkjuiojhfidufkldufhdilfjkdjfiljdifjidjfiljiofiikdjfk"
 
 module.exports = async (req, res, next) => {
+    const token = await req.header("x-authorization") || req.query.token || req.header("x-access-token");
     try {
-        const token = await req.body.token || req.query.token || req.headers["x-access-token"];
 
         if (!token) {
             return res.status(403).send("A token is required")
         }
         const decoded = jwt.verify(token, SECRET_KEY)
-        req.user = decoded
+        req.user = decoded.user
 
     } catch (err) {
         return res.status(401).send("Invalid token")

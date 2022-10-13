@@ -5,7 +5,7 @@ const todosController = require('./todos.controller');
 
 module.exports = app => {
 
-    todosRouter.get('/todo', todosController.getAll);
+    todosRouter.get('/todo', auth, todosController.getAll);
 
     todosRouter.get('/todo/:id', todosController.getOneTodo);
 

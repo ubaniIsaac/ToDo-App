@@ -13,7 +13,7 @@ const Footer = () => {
 
     return (
         <div>
-            <button onClick={nav}>Completed</button>
+            <button className="complete-btn" onClick={nav}>Completed</button>
         </div>
     )
 }

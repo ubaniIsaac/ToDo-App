@@ -4,7 +4,7 @@ import '../Styles/SignIn.css'
 import Cookies from "universal-cookie";
 const cookies = new Cookies()
 
-const API_URL = 'http://localhost:5000/'
+const API_URL = 'http://localhost:5000'
 
 const SignIn = () => {
 
@@ -56,15 +56,14 @@ const SignIn = () => {
             && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
             &&
             password) {
+            login(email, password)
             // navigate('/todo')
             // <Link to='/Todo'></Link>
         } else {
-            alert('Insert Email & Password')
+            setLoginResponse('Insert Email & Password')
         }
 
-        login(email, password)
 
-        navigate('/todo')
 
     }
 
@@ -101,6 +100,7 @@ const SignIn = () => {
                 <button className='btn' type='submit'>SIGN IN</button>
 
             </form>
+            {success === false ? <p>{loginResponse}</p> : <></>}
         </div>
     )
 }

@@ -12,7 +12,7 @@ body {
 header {
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
-  background: #b3b2b2;
+  background: #f4f4f4;
   padding: 1rem;
   text-align: center;
 }
@@ -28,7 +28,7 @@ header {
   border-radius: 0.5rem;
 
   padding: 2rem;
-  background: #b3b2b2;
+  background: #f4f4f4;
 }
 
 .todo-input {
@@ -63,9 +63,19 @@ header {
 
 .todo {
   padding: 5px;
-  background: #b3b2b2;
+  background: #f4f4f4;
   margin: 5px 0;
   display: flex;
   justify-content: space-between;
   border-radius: 0.5rem
+}
+
+.complete-btn {
+  height: 1.5rem;
+  background-color: #444;
+  color: white;
+  width: 200px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
 }

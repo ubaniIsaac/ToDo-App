@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react';
 import './Styles/App.css';
-import { BrowserRouter as Router, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
 import AddTodos from './Components/AddTodos';
-import Todo from './Components/Todo';
 import TodoList from './Components/TodoList';
-import { v4 as uuidv4 } from 'uuid';
 import Footer from './Components/Footer';
-import Completed from './Components/Completed';
 import CompleteList from './Components/CompleteList';
+import Cookies from "universal-cookie";
+const cookies = new Cookies()
 
 
 
 function App() {
   const [todos, setTodos] = useState([])
   const [completed, setCompleted] = useState([])
+  const token = cookies.get("TOKEN")
+
 
   const API_URL = 'http://localhost:5000';
 
@@ -61,9 +62,10 @@ function App() {
 
     const res = await fetch(`${API_URL}/todo`, {
       method: 'GET',
-      // headers: {
-      //   Authorization: `Bearer ${token}`
-      // }
+      headers: {
+        'Content-type': 'application/json',
+        "X-Authorization": token,
+      }
     })
     const data = await res.json()
 

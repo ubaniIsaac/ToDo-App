@@ -21,7 +21,7 @@ const CompleteList = ({ completeTodos, onDelete }) => {
             ))}
 
             <div>
-                <button onClick={nav}>To-do</button>
+                <button className='complete-btn' onClick={nav}>To-do</button>
             </div>
         </div>
     )

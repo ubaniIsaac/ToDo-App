@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const Users = require("../../models/user.model")
 const db = require("../../config/db.config")
+const { SECRET_KEY } = process.env
 
-const SECRET_KEY = "mkjkdjjfsijlhjvjflfkjuiojhfidufkldufhdilfjkdjfiljdifjidjfiljiofiikdjfk"
 
 exports.signup = (req, res) => {
     try {
@@ -23,13 +23,10 @@ exports.signup = (req, res) => {
                             })
                         }
                         else {
-                            const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: "24h" })
                             return res.json({ status: "success", data: user, token })
                         }
                     })
                 }
-
-
             })
         }
     } catch (error) {
@@ -48,10 +45,15 @@ exports.login = (req, res) => {
         db.query(`SELECT * FROM users WHERE email = ?`, [email], async (err, result) => {
             // console.log(result[0].password)
             if (result && (await bcrypt.compare(password, result[0].password))) {
-                const token = jwt.sign({ id: result[0].id, email }, SECRET_KEY, { expiresIn: "24h" })
+                const token = jwt.sign(
+                    { id: result[0].id, email }, SECRET_KEY, { expiresIn: "24h" })
                 return res.status(200).json({ data: result, token })
             } else {
-                res.status(400).send("Invalid Credentials");
+                res.status(400).send({
+                    statusCode: 400,
+                    message: "Invalid Credentials"
+                });
+                console.log('Invalid credentials')
             }
         })
     } catch (error) {
