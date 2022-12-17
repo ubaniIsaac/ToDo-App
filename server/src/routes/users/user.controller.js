@@ -23,7 +23,7 @@ exports.signup = (req, res) => {
                             })
                         }
                         else {
-                            return res.json({ status: "success", data: user, token })
+                            return res.json({ status: "success", data: user })
                         }
                     })
                 }
