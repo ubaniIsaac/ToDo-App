@@ -18,7 +18,7 @@ function App() {
   const token = cookies.get("TOKEN")
 
 
-  const API_URL = 'http://localhost:5000';
+  const API_URL = 'https://todolist-web-app.onrender.com';
 
   let id = 100
 
